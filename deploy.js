@@ -2,8 +2,8 @@ var cmd = require('node-cmd');
 var path, node_ssh, ssh, fs;
 fs = require('fs');
 path = require('path');
-node_ssh = require('node-ssh');
-ssh = new node_ssh();
+NodeSSH = require('node-ssh');
+ssh = new NodeSSH();
 // the method that starts the deployment process
 function main() {
     console.log('Deployment started.');
@@ -45,7 +45,7 @@ function transferProjectToRemote(failed, successful) {
 // creates a temporary folder on the remote server
 function createRemoteTempFolder() {
     return ssh.execCommand(
-        'rm -rf riot-express-todo-list-temp && mkdir riot-express-todo-list-temp', {
+        'rm -rf hackathon-starter-temp && mkdir hackathon-starter-temp', {
         cwd: '/home/ubuntu'
     });
 }
@@ -58,7 +58,7 @@ function stopRemoteServices() {
 }
 function makeNewProject() {
     return ssh.execCommand(
-        'mkdir riot-express-todo-list', {
+        'mkdir hackathon-starter', {
             cwd: '/home/ubuntu'
         });
 }
@@ -66,14 +66,14 @@ function makeNewProject() {
 function updateRemoteApp() {
     makeNewProject();
     return ssh.execCommand(
-        'cp -r riot-express-todo-list-temp/* riot-express-todo-list/ && rm -rf riot-express-todo-list-temp', {
+        'cp -r hackathon-starter-temp/* hackathon-starter/ && rm -rf hackathon-starter-temp', {
         cwd: '/home/ubuntu'
     });
 }
 // restart mongodb and node services on the remote server
 function restartRemoteServices() {
     return ssh.execCommand(
-        'cd riot-express-todo-list && sudo service mongod start && pm2 start app.js', {
+        'cd hackathon-starter && sudo service mongod start && pm2 start app.js', {
         cwd: '/home/ubuntu'
     });
 }
